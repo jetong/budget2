@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Budget Tracker</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">  
+
+</head>
+
+<body onload="init()">
+    <div class="container">
+        <div class="row">
+            
+            <!-- ADD RECORD -->
+            <div class="col-md-6">
+                <header>
+                    <h1>Budget Tracker</h1>
+                </header>
+
+                <main>
+                    <form id="form">
+                        <fieldset>
+                            <legend>Add Record</legend>
+
+                            <div class="row">
+                                <div class="row-item">
+                                    <label for="date">Date</label>
+                                    <input type="date" class="expenses" id="date" name="date">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="row-item" id="row-item-switch">
+
+																		<label class="switch">
+																				<div class="row row-switch">
+																						<div class="col-md-6 label-wrapper">
+																								<div class="switch-txt">Expense</div>
+																						</div>
+																						<div class="col-md-6 label-wrapper">
+																								<div class="switch-txt">Income</div>
+																						</div>
+																				</div>
+																				<input type="checkbox" id="transaction" name="transaction">
+																				<span class="slider"></span>
+																		</label>
+
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="row-item">
+                                    <label for="category">Category</label>
+                                    <select id="category" name="category">
+                                        <option value="Automotive">Automotive</option>
+                                        <option value="Eating Out">Eating Out</option>
+                                        <option value="Entertainment">Entertainment</option>
+                                        <option value="Gifts">Gifts</option>
+                                        <option value="Groceries">Groceries</option>
+                                        <option value="Health">Health</option>
+                                        <option value="Insurance">Insurance</option>
+                                        <option value="Mortgage">Mortgage</option>
+                                        <option value="Personal">Personal</option>
+                                        <option value="Pets">Pets</option>
+                                        <option value="Rent">Rent</option>
+                                        <option value="Shopping">Shopping</option>
+                                        <option value="Transport">Transport</option>
+                                        <option value="Tax">Tax</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="row-item">
+                                    <label for="amount">Amount</label>
+                                    <input type="number" class="expenses" id="amount" name="amount" step="any" placeholder=0>
+                                </div>
+                            </div>
+                        </fieldset>
+<!--
+                        <button type="submit" id="btn-submit" onclick="main()">Submit Expenses</button>
+                        <button type="button" id="btn-start-over" onclick="startOver()">Start Over</button>
+-->
+                        <button type="submit" id="btn-submit">Submit Expenses</button>
+                        <button type="button" id="btn-start-over">Start Over</button>
+                    </form>
+                </main>
+            </div> <!-- close div for left side of page -->
+
+
+            <!-- SUMMARY -->
+            <div id="summary-wrapper" class="col-md-6">
+                <h2>Summary</h2>
+								<ul>
+									<div id="summary"></div>
+								</ul>
+            </div> <!-- close right div -->
+        </div><!-- close row div -->
+
+
+        <!-- CHART DISPLAY -->
+        <div class="row">
+            <div class="col-md-12">
+
+                <h2>Pie Chart</h2>
+                <!-- Split right side into 3 flexboxes -->
+                <div id="right-row">
+
+                    <!-- Left flexbox -->
+                    <div id="canvas-balance-wrapper">
+                        <div id="canvas-wrapper">
+                            <canvas id="canvas"></canvas>
+                        </div>
+                        <!-- Flexbox panel for displaying the balance -->
+                        <div id="balance-panel">
+                            <div id="left-panel">
+                            </div>
+                            <div id="mid-panel">
+                                <label for="balance" id="balance-label">Balance</label>
+                                <input id="balance" readonly>
+                            </div>
+                            <div id="right-panel">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Middle flexbox (empty space for flexing) -->
+                    <div id="buffer-space">
+                    </div>
+
+                    <!-- Right flexbox -->
+                    <div id="key-wrapper">
+                        <h3>Key</h3>
+                        <div id="key">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div><!-- close row for chart display -->
+
+
+    </div> <!-- close container div -->
+
+
+
+		<script src="javascript/script.js"></script>
+</body>
+</html>

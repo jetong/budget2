@@ -3,8 +3,33 @@ var context;
 let categories = [];
 
 
-let today = new Date().toISOString().substr(0, 10);
-document.getElementById("date").value = today;
+// Initialize date input with today's date
+let d = new Date();
+let year = d.getFullYear();
+let month = d.getMonth() + 1;
+let day = d.getDate();
+let dateString = year + "-" + pad(month) + "-" + pad(day);
+document.getElementById("date").value = dateString;
+
+// Pad day and month with 0 to conform to date format
+function pad(val) {
+	return val < 10 ? "0" + val : val;
+}
+
+// Toggle expense/income dropdown options
+$("#transaction").change( () => {
+	if($("#inc").hasClass("hide")) {
+		$("#exp").removeClass("show");
+		$("#exp").addClass("hide");
+		$("#inc").removeClass("hide");
+		$("#inc").addClass("show");
+	} else {
+		$("#inc").removeClass("show");
+		$("#inc").addClass("hide");
+		$("#exp").removeClass("hide");
+		$("#exp").addClass("show");
+	}	
+});
 
 $("#form").submit(function(e){
   e.preventDefault();

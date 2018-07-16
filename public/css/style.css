@@ -197,6 +197,17 @@ fieldset > :last-child {
 		margin-bottom: .75em;
 }
 
+.hide {
+		position: absolute !important;
+		top: -9999px !important;
+		left: -9999px !important;
+}
+
+.show {
+		position: relative !important;
+		top: 0px;
+		left: 0px;
+}
 
 
 /* SUBMIT / CANCEL BUTTONS */

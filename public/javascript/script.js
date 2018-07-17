@@ -1,20 +1,7 @@
 var canvas;
 var context;
-let categories = [];
-
-
-// Initialize date input with today's date
-let d = new Date();
-let year = d.getFullYear();
-let month = d.getMonth() + 1;
-let day = d.getDate();
-let dateString = year + "-" + pad(month) + "-" + pad(day);
-document.getElementById("date").value = dateString;
-
-// Pad day and month with 0 to conform to date format
-function pad(val) {
-	return val < 10 ? "0" + val : val;
-}
+let expenses = {};
+let incomes = {};
 
 // Toggle expense/income dropdown options
 $("#transaction").change( () => {
@@ -38,7 +25,7 @@ $("#form").submit(function(e){
 $("#btn-submit").click( () => {
 	let date = $("#date").val();
 	let transaction = $("#transaction").prop("checked") ? "income" : "expense";
-	let category = $("#category").val();
+	let category = $("#inc").hasClass("hide") ? $("#expense").val() : $("#income").val();
 	let amount = $("#amount").val();
 
 	let query = "?";
@@ -54,14 +41,15 @@ $("#btn-submit").click( () => {
 		summary.html("");
 		recs = Array.from(records);
 
-		let todayCount = 0;
-		let todayTotal = 0;
-		let monthCount = 0;
-		let monthTotal = 0;
-		let yearCount = 0;
-		let yearTotal = 0;
-		let totalCount = 0;
-		let total = 0;
+		let todayTotalExpense = 0;
+		let monthTotalExpense = 0;
+		let yearTotalExpense = 0;
+		let totalExpense = 0;
+
+		let todayTotalIncome = 0;
+		let monthTotalIncome = 0;
+		let yearTotalIncome = 0;
+		let totalIncome = 0;
 
 		let now = new Date();
 		let current = {year: now.getYear()+1900, 
@@ -69,43 +57,68 @@ $("#btn-submit").click( () => {
 											day: now.getDate()
 		};
 
+		// Reset totals
+		for(let category in expenses) {
+			expenses[category].total = 0;
+		}
+		for(let category in incomes) {
+			incomes[category].total = 0;
+		}
+
 		recs.forEach( (rec) => {
+			// Accummulate totals by category
+			if(rec.transaction === "expense") {
+				expenses[rec.category].total += Number(rec.amount);
+			} else {
+				incomes[rec.category].total += Number(rec.amount);
+			}
+
+			// Calculate values for Summary
 			recYMD = rec.date.split("-");		// Year-Month-Day
 			let year = recYMD[0];
 			let month = recYMD[1];
 			let day = recYMD[2];
 
-			// This Year
-			if(year == current.year) {
-				yearCount++;
-				yearTotal += Number(rec.amount);
-
-				// This Month
-				if(month == current.month) {
-					monthCount++;
-					monthTotal += Number(rec.amount);
-
-					// Today
-					if(day == current.day) {
-						todayCount++;
-						todayTotal += Number(rec.amount);
+			if(rec.transaction === "expense") {
+				if(year == current.year) {
+					yearTotalExpense += Number(rec.amount);
+					if(month == current.month) {
+						monthTotalExpense += Number(rec.amount);
+						if(day == current.day) {
+							todayTotalExpense += Number(rec.amount);
+						}
 					}
 				}
+				totalExpense += Number(rec.amount);
+			} else {
+				if(year == current.year) {
+					yearTotalIncome += Number(rec.amount);
+					if(month == current.month) {
+						monthTotalIncome += Number(rec.amount);
+						if(day == current.day) {
+							todayTotalIncome += Number(rec.amount);
+						}
+					}
+				}
+				totalIncome += Number(rec.amount);
 			}
+		});	// End recs.forEach()
 
-			// Total
-			totalCount++;
-			total += Number(rec.amount);
-
-		});
-
-		summary.append("<li>Daily Total: " + todayTotal + "</li>");
+		summary.append("<li>Daily Income: " + todayTotalIncome + "</li>");
+		summary.append("<li>Daily Expense: " + todayTotalExpense + "</li>");
+		summary.append("<li>Daily Balance: " + (todayTotalIncome - todayTotalExpense) + "</li>");
 		summary.append("<br>");
-		summary.append("<li>Monthly Total: " + monthTotal + "</li>");
+		summary.append("<li>Monthly Income: " + monthTotalIncome + "</li>");
+		summary.append("<li>Monthly Expense: " + monthTotalExpense + "</li>");
+		summary.append("<li>Monthly Balance: " + (monthTotalIncome - monthTotalExpense) + "</li>");
 		summary.append("<br>");
-		summary.append("<li>Yearly Total: " + yearTotal + "</li>");
+		summary.append("<li>Yearly Income: " + yearTotalIncome + "</li>");
+		summary.append("<li>Yearly Expense: " + yearTotalExpense + "</li>");
+		summary.append("<li>Yearly Balance: " + (yearTotalIncome - yearTotalExpense) + "</li>");
 		summary.append("<br>");
-		summary.append("<li>Grand total: " + total + "</li>");
+		summary.append("<li>Total Income: " + totalIncome + "</li>");
+		summary.append("<li>Total Expense: " + totalExpense + "</li>");
+		summary.append("<li>Total Balance: " + (totalIncome - totalExpense) + "</li>");
 		summary.append("<br>");
 
 	});
@@ -114,6 +127,21 @@ $("#btn-submit").click( () => {
 
 // Execute on page load/refresh
 function init() {
+	// Initialize date input with today's date
+	let d = new Date();
+	let year = d.getFullYear();
+	let month = d.getMonth() + 1;
+	let day = d.getDate();
+	let dateString = year + "-" + pad(month) + "-" + pad(day);
+	document.getElementById("date").value = dateString;
+
+	// Initialize 'expenses' and 'incomes' objects
+	$("#exp option").each(function() {
+		expenses[$(this).val()] = {color: getRandomColor(), total: 0};
+	});
+	$("#inc option").each(function() {
+		incomes[$(this).val()] = {color: getRandomColor(), total: 0};
+	});
 
 	// Get canvas graphics context
 	canvas = document.getElementById("canvas");
@@ -122,8 +150,6 @@ function init() {
 	// Clear cache on page refresh
 	startOver()
 	
-	// Initialize rgb values for categories
-	randomizeColors();
 	
 	// Register canvas dimensions onload
 	resizeCanvas();
@@ -142,7 +168,7 @@ function main() {
 
 // Execute on 'start over' button click
 function startOver() {
-	expenses = [];
+	//expenses = [];
 	
 	// Clear canvas
 	context.clearRect(0, 0, canvas.width, canvas.height);
@@ -153,7 +179,7 @@ function startOver() {
 	    keyDiv.removeChild(keyDiv.firstChild);
 	}
 	
-	randomizeColors();
+	//randomizeColors();
 }
 
 
@@ -215,7 +241,7 @@ for(var i = 0; i < inputElements.length; i++) {
 // style colorBox
 colorBox.style.width = "20px";
 colorBox.style.height = "20px";
-colorBox.style.background = colors[i];
+//colorBox.style.background = colors[i];
 colorBox.style.border = "solid thin #000000";
 colorBox.style.display = "inline-block";
 colorBox.style.margin = "5px";
@@ -242,18 +268,17 @@ keyDiv.appendChild(item);
 
 // Helper functions
 
-$("#category option").each(function() {
-	categories.push({category: $(this).val()}); 
-});
+// Pad day and month with 0 to conform to date format
+function pad(val) {
+	return val < 10 ? "0" + val : val;
+}
 
-// Assign random colors for each category
-function randomizeColors() {
-		for(var i = 0; i < categories.length; i++) {
-			var red = Math.trunc(Math.random()*255);
-			var green = Math.trunc(Math.random()*255);
-			var blue = Math.trunc(Math.random()*255);
-			categories[i].color = "rgb(" + red + "," + green + "," + blue + ")";
-		}
+// Generate random color
+function getRandomColor() {
+		let red = Math.trunc(Math.random()*255);
+		let green = Math.trunc(Math.random()*255);
+		let blue = Math.trunc(Math.random()*255);
+		return "rgb(" + red + "," + green + "," + blue + ")";
 }
 
 
@@ -270,5 +295,3 @@ function resizeCanvas() {
     canvas.height = document.getElementById("canvas-wrapper").clientHeight;
 }
 
-
-console.log(categories);

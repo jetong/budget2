@@ -76,7 +76,6 @@ h3 {
 }
 
 
-/* Structure the page as a row with left and right flexbox elements */
 .row {
     text-align: center;
 		height: 100%;
@@ -210,7 +209,7 @@ fieldset > :last-child {
 }
 
 
-/* SUBMIT / CANCEL BUTTONS */
+/* SUBMIT and CLEAR HISTORY BUTTONS */
 #btnsubmit {
     height: 2em;
     margin-bottom: .5em;
@@ -228,66 +227,14 @@ fieldset > :last-child {
 }
 
 
-/* CHART (canvas-balance-wrapper + buffer space + key-wrapper) */
-#right-row {
-    display:flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    height: 26em;
-    width: 100%;
-}
-
+/* CHART */
 #canvas-balance-wrapper {
-    width: 65%;
+    width: 100%;
     min-width: 20em;
-    max-width: 27em;
 }
 
 #canvas-wrapper {
-    height: 23em;
-}
-
-#buffer-space {
-    width: 10%;
-    min-width: 0em;
-    max-width: 3em;
-}
-
-#balance-panel {
-    display:flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    height: 2em;
-    border-top: solid thin #A239CA;
-    padding-top: .25em;
-}
-
-#left-panel {
-    width: 15%;
-}
-
-#right-panel {
-    width: 15%;
-}
-
-#mid-panel {
-    width: 70%;
-    text-align: center;
-}
-
-#balance-label {
-    font-weight: 100;
-    font-style: italic;
-    font-size: 20px;
-    width: 4em;
-}
-
-#balance {
-    margin-top: .2em;
-    margin-right: 1em;
-    height: 1.25em;
-    text-align: center;
+    height: 27em;
 }
 
 #key-wrapper {

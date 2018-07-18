@@ -2,6 +2,7 @@ var canvas;
 var context;
 let expenses = {};
 let incomes = {};
+let totalExpense = 0;
 
 // Toggle expense/income dropdown options
 $("#transaction").change( () => {
@@ -44,7 +45,6 @@ $("#btn-submit").click( () => {
 		let todayTotalExpense = 0;
 		let monthTotalExpense = 0;
 		let yearTotalExpense = 0;
-		let totalExpense = 0;
 
 		let todayTotalIncome = 0;
 		let monthTotalIncome = 0;
@@ -57,7 +57,8 @@ $("#btn-submit").click( () => {
 											day: now.getDate()
 		};
 
-		// Reset totals
+		// Reset "global" totals
+		totalExpense = 0;
 		for(let category in expenses) {
 			expenses[category].total = 0;
 		}
@@ -121,6 +122,8 @@ $("#btn-submit").click( () => {
 		summary.append("<li>Total Balance: " + (totalIncome - totalExpense) + "</li>");
 		summary.append("<br>");
 
+		// Render chart and key 
+		draw();
 	});
 });
 
@@ -148,7 +151,7 @@ function init() {
 	context = canvas.getContext("2d");
 	
 	// Clear cache on page refresh
-	startOver()
+	clearHistory()
 	
 	
 	// Register canvas dimensions onload
@@ -159,15 +162,8 @@ function init() {
 }
 
 
-// Execute on 'submit expenses' button click
-function main() {
-	// Render visual data
-	draw();
-}
-
-
-// Execute on 'start over' button click
-function startOver() {
+// Clear database entries
+function clearHistory() {
 	//expenses = [];
 	
 	// Clear canvas
@@ -179,7 +175,6 @@ function startOver() {
 	    keyDiv.removeChild(keyDiv.firstChild);
 	}
 	
-	//randomizeColors();
 }
 
 
@@ -192,24 +187,18 @@ function draw() {
 // Draw pie chart one section (category) at a time
 function drawPieChart(x, y, radius) {
 	// Current pie section's ratio to the entire pie
-	var ratio;
-	
-	// Sum up expenses to calculate individual ratios
-	var totalExpenses = 0;
-	for(var i = 0; i < expenses.length; i++) {
-	  totalExpenses += expenses[i];
-	}
+	let ratio;
 	
 	// Starting and ending angles of each pie section
-	var startingAngle = 0;
-	var endingAngle = 0;
+	let startingAngle = 0;
+	let endingAngle = 0;
 	
-	for(var i = 0; i < expenses.length; i++) {
+	for(let key in expenses) {
 	  context.beginPath();
 
-		context.fillStyle = colors[i];
+		context.fillStyle = expenses[key].color;
 	
-		ratio = expenses[i]/totalExpenses;
+		ratio = expenses[key].total/totalExpense;
 		endingAngle = startingAngle + Math.PI*2*ratio;
 		
 		context.arc(x, y, radius, startingAngle, endingAngle);
@@ -231,39 +220,37 @@ function drawKey() {
 		keyDiv.removeChild(keyDiv.firstChild);
 	}
 
-// Append new key items
-var inputElements = document.getElementsByClassName("expenses");
-for(var i = 0; i < inputElements.length; i++) {
-    var item = document.createElement("div");
-    var label = document.createElement("label");
-    var colorBox = document.createElement("div");
-
-// style colorBox
-colorBox.style.width = "20px";
-colorBox.style.height = "20px";
-//colorBox.style.background = colors[i];
-colorBox.style.border = "solid thin #000000";
-colorBox.style.display = "inline-block";
-colorBox.style.margin = "5px";
-colorBox.style.float = "left";
-
-// Style label next to colorBox
-label.innerHTML = inputElements[i].id;
-label.style.textAlign = "left";
-label.style.width = "auto";
-label.style.margin = "7px";
-
-// Style item container for colorBox and label
-item.style.width = "auto";
-item.style.textAlign = "left";
-
-// Attach items to DOM
-item.appendChild(colorBox);
-item.appendChild(label);
-keyDiv.appendChild(item);
+	// Append new key items
+	for(let key in expenses) {
+		var item = document.createElement("div");
+		var label = document.createElement("label");
+		var colorBox = document.createElement("div");
+	
+	// style colorBox
+	colorBox.style.width = "20px";
+	colorBox.style.height = "20px";
+	colorBox.style.background = expenses[key].color;
+	colorBox.style.border = "solid thin #000000";
+	colorBox.style.display = "inline-block";
+	colorBox.style.margin = "5px";
+	colorBox.style.float = "left";
+	
+	// Style label next to colorBox
+	label.innerHTML = key;
+	label.style.textAlign = "left";
+	label.style.width = "auto";
+	label.style.margin = "4px";
+	
+	// Style item container for colorBox and label
+	item.style.width = "auto";
+	item.style.textAlign = "left";
+	
+	// Attach items to DOM
+	item.appendChild(colorBox);
+	item.appendChild(label);
+	keyDiv.appendChild(item);
+	}
 }
-}
-
 
 
 // Helper functions

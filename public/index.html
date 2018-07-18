@@ -18,7 +18,7 @@
     <div class="container">
         <div class="row">
             
-            <!-- ADD RECORD -->
+            <!-- FORM -->
             <div class="col-md-6">
                 <header>
                     <h1>Budget Tracker</h1>
@@ -97,15 +97,12 @@
                                 </div>
                             </div>
                         </fieldset>
-<!--
-                        <button type="submit" id="btn-submit" onclick="main()">Submit Expenses</button>
-                        <button type="button" id="btn-start-over" onclick="startOver()">Start Over</button>
--->
-                        <button type="submit" id="btn-submit" onclick="main()">Submit Expenses</button>
-                        <button type="button" id="btn-start-over">Start Over</button>
+
+                        <button type="submit" id="btn-submit">Submit Expenses</button>
+                        <button type="button" id="btn-start-over" onclick="clearHistory()">Clear History</button>
                     </form>
                 </main>
-            </div> <!-- close div for left side of page -->
+            </div> <!-- close form -->
 
 
             <!-- SUMMARY -->
@@ -118,51 +115,32 @@
         </div><!-- close row div -->
 
 
-        <!-- CHART DISPLAY -->
+        <!-- CHART & KEY DISPLAY -->
         <div class="row">
-            <div class="col-md-12">
-
-                <h2>Pie Chart</h2>
-                <!-- Split right side into 3 flexboxes -->
-                <div id="right-row">
-
-                    <!-- Left flexbox -->
+						<!-- CHART (LEFT) -->
+            <div class="col-md-6">
+                <h4>Total Expenses To Date</h4>
+                <div>
                     <div id="canvas-balance-wrapper">
                         <div id="canvas-wrapper">
                             <canvas id="canvas"></canvas>
                         </div>
-                        <!-- Flexbox panel for displaying the balance -->
-                        <div id="balance-panel">
-                            <div id="left-panel">
-                            </div>
-                            <div id="mid-panel">
-                                <label for="balance" id="balance-label">Balance</label>
-                                <input id="balance" readonly>
-                            </div>
-                            <div id="right-panel">
-                            </div>
-                        </div>
                     </div>
-
-                    <!-- Middle flexbox (empty space for flexing) -->
-                    <div id="buffer-space">
-                    </div>
-
-                    <!-- Right flexbox -->
-                    <div id="key-wrapper">
-                        <h3>Key</h3>
-                        <div id="key">
-                        </div>
-                    </div>
-
                 </div>
-
             </div>
+
+						<!-- KEY (RIGHT) -->
+						<div class="col-md-6">
+            		<div id="key-wrapper">
+										<h3>Key</h3>
+										<div id="key">
+										</div>
+								</div>
+						</div>
         </div><!-- close row for chart display -->
 
 
     </div> <!-- close container div -->
-
 
 
 		<script src="javascript/script.js"></script>

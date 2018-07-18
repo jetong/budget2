@@ -75,7 +75,7 @@ $("#btn-submit").click( () => {
 			}
 
 			// Calculate values for Summary
-			recYMD = rec.date.split("-");		// Year-Month-Day
+			recYMD = rec.date.split("-");
 			let year = recYMD[0];
 			let month = recYMD[1];
 			let day = recYMD[2];
@@ -105,21 +105,21 @@ $("#btn-submit").click( () => {
 			}
 		});	// End recs.forEach()
 
-		summary.append("<li>Daily Income: " + todayTotalIncome + "</li>");
-		summary.append("<li>Daily Expense: " + todayTotalExpense + "</li>");
-		summary.append("<li>Daily Balance: " + (todayTotalIncome - todayTotalExpense) + "</li>");
-		summary.append("<br>");
-		summary.append("<li>Monthly Income: " + monthTotalIncome + "</li>");
-		summary.append("<li>Monthly Expense: " + monthTotalExpense + "</li>");
-		summary.append("<li>Monthly Balance: " + (monthTotalIncome - monthTotalExpense) + "</li>");
-		summary.append("<br>");
-		summary.append("<li>Yearly Income: " + yearTotalIncome + "</li>");
-		summary.append("<li>Yearly Expense: " + yearTotalExpense + "</li>");
-		summary.append("<li>Yearly Balance: " + (yearTotalIncome - yearTotalExpense) + "</li>");
-		summary.append("<br>");
-		summary.append("<li>Total Income: " + totalIncome + "</li>");
-		summary.append("<li>Total Expense: " + totalExpense + "</li>");
-		summary.append("<li>Total Balance: " + (totalIncome - totalExpense) + "</li>");
+		summary.append("<p>Daily Income: " + todayTotalIncome + "</p>");
+		summary.append("<p>Daily Expense: " + todayTotalExpense + "</p>");
+		summary.append("<p>Daily Balance: " + (todayTotalIncome - todayTotalExpense) + "</p>");
+		summary.append("<hr>");
+		summary.append("<p>Monthly Income: " + monthTotalIncome + "</p>");
+		summary.append("<p>Monthly Expense: " + monthTotalExpense + "</p>");
+		summary.append("<p>Monthly Balance: " + (monthTotalIncome - monthTotalExpense) + "</p>");
+		summary.append("<hr>");
+		summary.append("<p>Yearly Income: " + yearTotalIncome + "</p>");
+		summary.append("<p>Yearly Expense: " + yearTotalExpense + "</p>");
+		summary.append("<p>Yearly Balance: " + (yearTotalIncome - yearTotalExpense) + "</p>");
+		summary.append("<hr>");
+		summary.append("<p>Total Income: " + totalIncome + "</p>");
+		summary.append("<p>Total Expense: " + totalExpense + "</p>");
+		summary.append("<p>Total Balance: " + (totalIncome - totalExpense) + "</p>");
 		summary.append("<br>");
 
 		// Render chart and key 
@@ -179,7 +179,7 @@ function clearHistory() {
 
 
 function draw() {
-	drawPieChart(canvas.width/2, canvas.height/2, canvas.width*.4);
+	drawPieChart(canvas.width/2, canvas.height/2, canvas.width*.35);
 	drawKey();
 }
 
@@ -220,35 +220,35 @@ function drawKey() {
 		keyDiv.removeChild(keyDiv.firstChild);
 	}
 
-	// Append new key items
+	// Create elements to append
 	for(let key in expenses) {
 		var item = document.createElement("div");
 		var label = document.createElement("label");
 		var colorBox = document.createElement("div");
 	
-	// style colorBox
-	colorBox.style.width = "20px";
-	colorBox.style.height = "20px";
-	colorBox.style.background = expenses[key].color;
-	colorBox.style.border = "solid thin #000000";
-	colorBox.style.display = "inline-block";
-	colorBox.style.margin = "5px";
-	colorBox.style.float = "left";
-	
-	// Style label next to colorBox
-	label.innerHTML = key;
-	label.style.textAlign = "left";
-	label.style.width = "auto";
-	label.style.margin = "4px";
-	
-	// Style item container for colorBox and label
-	item.style.width = "auto";
-	item.style.textAlign = "left";
-	
-	// Attach items to DOM
-	item.appendChild(colorBox);
-	item.appendChild(label);
-	keyDiv.appendChild(item);
+		// style colorBox
+		colorBox.style.width = "20px";
+		colorBox.style.height = "20px";
+		colorBox.style.background = expenses[key].color;
+		colorBox.style.border = "solid thin #000000";
+		colorBox.style.display = "inline-block";
+		colorBox.style.margin = "5px";
+		colorBox.style.float = "left";
+		
+		// Style label next to colorBox
+		label.innerHTML = key;
+		label.style.textAlign = "left";
+		label.style.width = "auto";
+		label.style.margin = "4px";
+		
+		// Style item container for colorBox and label
+		item.style.width = "auto";
+		item.style.textAlign = "left";
+		
+		// Attach elements to DOM
+		item.appendChild(colorBox);
+		item.appendChild(label);
+		keyDiv.appendChild(item);
 	}
 }
 
@@ -268,17 +268,14 @@ function getRandomColor() {
 		return "rgb(" + red + "," + green + "," + blue + ")";
 }
 
-
 // Update canvas dimensions and redraw pie chart
 function refreshCanvas() {
     resizeCanvas();
-    drawPieChart(canvas.width/2, canvas.height/2, canvas.width*.4);
+    drawPieChart(canvas.width/2, canvas.height/2, canvas.width*.45);
 }
-
 
 // Match canvas dimensions to the resizing parent wrapper-div
 function resizeCanvas() {
     canvas.width = document.getElementById("canvas-wrapper").clientWidth;
     canvas.height = document.getElementById("canvas-wrapper").clientHeight;
 }
-

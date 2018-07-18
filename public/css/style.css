@@ -50,19 +50,25 @@ h1 {
     margin: auto;
 }
 
+/* summary & chart title */
 h2 {
-    padding: .25em 0 .25em 0;
+    padding: .4em 0 .4em 0;
     font-weight: 100;
     font-style: italic;
     text-decoration: underline;
 }
+
+#chart-header {
+		padding-bottom: .5em;
+}
+
 
 /* KEY */
 h3 {
     font-weight: 100;
     font-style: italic;
     text-align: left;
-    border-bottom: solid thin #A239CA;
+    border-bottom: solid thin green;
     padding-bottom: 5px;
     width: 100%;
 }
@@ -209,39 +215,26 @@ fieldset > :last-child {
 }
 
 
-/* SUBMIT and CLEAR HISTORY BUTTONS */
-#btnsubmit {
-    height: 2em;
-    margin-bottom: .5em;
-}
-
-#btn-start-over {
-    height: 2em;
-}
-
-
 /* SUMMARY */
-#summary-wrapper {
-		overflow: auto;
-		width: 100%;
+p {
+		margin: 0;
 }
 
 
 /* CHART */
-#canvas-balance-wrapper {
+#canvas-wrapper {
+		height: 30.5em;
     width: 100%;
     min-width: 20em;
 }
 
-#canvas-wrapper {
-    height: 27em;
-}
-
+/* KEY */
 #key-wrapper {
-    width:25%;
-    min-width: 10em;
+		margin: auto;
+    width:50%;
     max-width: 12em;
     padding-left: 0em;
-    margin-top: 2em;
-    border: solid red;
+    margin: 0 auto;
+		margin-top: 1em;
+		margin-bottom: 1em;
 }

@@ -5,7 +5,7 @@ let incomes = {};
 let totalExpense = 0;
 
 // Toggle expense/income dropdown options
-$("#transaction").change( () => {
+$("#transaction").change(function() {
 	if($("#inc").hasClass("hide")) {
 		$("#exp").removeClass("show");
 		$("#exp").addClass("hide");
@@ -23,7 +23,7 @@ $("#form").submit(function(e){
   e.preventDefault();
 });
 
-$("#btn-submit").click( () => {
+$("#btn-submit").click(function() {
 	let date = $("#date").val();
 	let transaction = $("#transaction").prop("checked") ? "income" : "expense";
 	let category = $("#inc").hasClass("hide") ? $("#expense").val() : $("#income").val();
@@ -37,7 +37,7 @@ $("#btn-submit").click( () => {
 
 	var url = "http://18.218.116.239:3001/update/" + query;
 
-	$.getJSON(url, (records, status) => {
+	$.getJSON(url, function(records, status) {
 		let summary = $("#summary");
 		summary.html("");
 		recs = Array.from(records);
@@ -66,7 +66,7 @@ $("#btn-submit").click( () => {
 			incomes[category].total = 0;
 		}
 
-		recs.forEach( (rec) => {
+		recs.forEach(function(rec) {
 			// Accummulate totals by category
 			if(rec.transaction === "expense") {
 				expenses[rec.category].total += Number(rec.amount);
@@ -105,21 +105,21 @@ $("#btn-submit").click( () => {
 			}
 		});	// End recs.forEach()
 
-		summary.append("<p>Daily Income: " + todayTotalIncome + "</p>");
-		summary.append("<p>Daily Expense: " + todayTotalExpense + "</p>");
-		summary.append("<p>Daily Balance: " + (todayTotalIncome - todayTotalExpense) + "</p>");
+		summary.append("<p>Daily Income: " + todayTotalIncome.toFixed(2) + "</p>");
+		summary.append("<p>Daily Expense: " + todayTotalExpense.toFixed(2) + "</p>");
+		summary.append("<p>Daily Balance: " + (todayTotalIncome - todayTotalExpense).toFixed(2) + "</p>");
 		summary.append("<hr>");
-		summary.append("<p>Monthly Income: " + monthTotalIncome + "</p>");
-		summary.append("<p>Monthly Expense: " + monthTotalExpense + "</p>");
-		summary.append("<p>Monthly Balance: " + (monthTotalIncome - monthTotalExpense) + "</p>");
+		summary.append("<p>Monthly Income: " + monthTotalIncome.toFixed(2) + "</p>");
+		summary.append("<p>Monthly Expense: " + monthTotalExpense.toFixed(2) + "</p>");
+		summary.append("<p>Monthly Balance: " + (monthTotalIncome - monthTotalExpense).toFixed(2) + "</p>");
 		summary.append("<hr>");
-		summary.append("<p>Yearly Income: " + yearTotalIncome + "</p>");
-		summary.append("<p>Yearly Expense: " + yearTotalExpense + "</p>");
-		summary.append("<p>Yearly Balance: " + (yearTotalIncome - yearTotalExpense) + "</p>");
+		summary.append("<p>Yearly Income: " + yearTotalIncome.toFixed(2) + "</p>");
+		summary.append("<p>Yearly Expense: " + yearTotalExpense.toFixed(2) + "</p>");
+		summary.append("<p>Yearly Balance: " + (yearTotalIncome - yearTotalExpense).toFixed(2) + "</p>");
 		summary.append("<hr>");
-		summary.append("<p>Total Income: " + totalIncome + "</p>");
-		summary.append("<p>Total Expense: " + totalExpense + "</p>");
-		summary.append("<p>Total Balance: " + (totalIncome - totalExpense) + "</p>");
+		summary.append("<p>Total Income: " + totalIncome.toFixed(2) + "</p>");
+		summary.append("<p>Total Expense: " + totalExpense.toFixed(2) + "</p>");
+		summary.append("<p>Total Balance: " + (totalIncome - totalExpense).toFixed(2) + "</p>");
 		summary.append("<br>");
 
 		// Render chart and key 
@@ -129,6 +129,10 @@ $("#btn-submit").click( () => {
 
 
 // Execute on page load/refresh
+$(document).ready(function() {
+		init();
+});
+
 function init() {
 	// Initialize date input with today's date
 	let d = new Date();

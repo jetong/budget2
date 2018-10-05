@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/budget', { useNewUrlParser: true });
+//mongoose.connect('mongodb://localhost:27017/budget', { useNewUrlParser: true });
+var uri = "mongodb+srv://admin:admin@cluster0-ue1al.mongodb.net/test?retryWrites=true";
+mongoose.connect(uri, { useNewUrlParser: true });
 
 const Schema = mongoose.Schema;
 let recordSchema = new Schema({

@@ -35,7 +35,7 @@ $("#btn-submit").click(function() {
 	if (category) query += "category=" + category + "&";
 	if (amount) query += "amount=" + amount;
 
-	var url = "http://104.248.73.138:3001/update/" + query;
+	var url = "http://localhost:3001/update/" + query;
 
 	$.getJSON(url, function(records, status) {
 		let summary = $("#summary");
